@@ -1,0 +1,317 @@
+Proefexamen Netwerken
+
+Stap 1
+TRUNKING
+
+Stap 2
+* Vlan management - Alleen op MLS
+	# vlan [nummer]
+	# naam [naam]
+		etc...
+
+* VTP (Virtual Trunking Protocol) - Op elke switch!
+	# vtp version [laatste versienummer]
+	# vtp mode [server/client]
+	# vtp domain [domeinnaam]
+
+* Spanning Tree - Op elke switch!
+	# spanning-tree vlan 1-100 root primary
+	# spanning-tree vlan 1-100 priority [bridge nummer] 
+		etc...
+		
+Stap 3:	
+*Vlan interface instellingen
+access switches: 
+	#start#
+
+		en
+	
+		conf t
+
+		interface range fa0/1 - fa0/5
+		switchport mode access
+		switchport access vlan 10
+
+		interface range fa0/6 - fa0/14
+		switchport mode access
+		switchport access vlan 20
+
+		interface range fa0/15 - fa0/18
+		switchport mode access
+		switchport access vlan 30
+
+		interface fa0/19
+		switchport mode access 
+		switchport access vlan 40
+
+		interface range fa0/20 - fa0/22
+		switchport mode acces
+		switchport access vlan 99
+		
+		interface gi0/2 
+		switchport mode access
+		switchport access vlan 50
+
+	#end#
+	
+Multilayer switch:
+	#start#
+		en
+	
+		conf t
+
+		interface Gi1/0/24
+		switchport mode access
+		switchport access vlan 1
+	#end#
+	
+Stap 4:
+* Access poorten en IP-adressen instellen
+
+TIP: WEBserver = DNS
+
+Vlan10 (Groep 1 + 2 Kleuters)
+	1.	Configureer P_A10 aan P_SW1 met int f0/5
+	2.	Configureer P_PR10 aan P_SW1 met int f0/4
+	3.	Ga op P_A10 op config mode en zet bij port 0 alles op ‘on’ en ‘auto’
+	4.	Bij port 1 in de config mode zet ‘SSID’  op Vlan10
+	5.	Bij 2.4 GHZ Channel vul je een willekeurig kanaalnummer in, maakt niet uit welke, als je er maar voor zorgt dat dat kanaalnummer niet door een andere access point wordt gebruikt. Hier als voorbeeld gebruiken we kanaalnummer ‘1’.
+	6.	Bij authentication zet je het op ‘WPA2-PSK en vul je als password in P@ssw0rd10. De 10 staat er achter omdat we nu op dit moment in vlan10 werken (Bij vlan20 bijvoorbeeld zetten we achter het password de 20).
+	7.	De encryption Type laat je op AES
+	8.	Ga op PL_10 en ga naar ‘Physical’ en zet het dan even uit en plaats de nieuwe netwerkkaart ‘WPC300N’ erin. Haal de kaart die er al inzit eerst uit. Niet vergeten op de laptop dan weer aan te zetten.
+	9.	Klik in PL_10 dan op ‘Desktop’ en dan op ‘PC Wireless’ en druk dan op CONNECT. Dan selecteer je vlan10 en vul je de password P@ssw0rd10 in en druk je weer op CONNECT.
+	10.	Op P_PR10 klik je op config en dan naar FastEthernet0 en dan vul je IPv4 Address 172.16.10.30 in en subnet 255.255.255.0. Bij settings vul je bij gateway 172.16.30.1 in en bij DNS-server 11.11.11.14
+
+Vlan20 (Groep 3-5)
+	1.	Configureer P_PR20 aan P_SW2 met int f0/13
+	2.	Configureer P_A20 aan P_SW2 met int f0/14
+	3.	Ga op P_A20 op config mode en zet bij port 0 alles op ‘on’ en ‘auto’
+	4.	Bij port 1 in de config mode zet ‘SSID’  op Vlan20
+	5.	Bij 2.4 GHZ Channel vul gebruiken we in dit geval ‘2’.
+	6.	Bij authentication zet je het op ‘WPA2-PSK en vul je als password in P@ssw0rd20. 
+	7.	De encryption Type laat je op AES
+	8.	Op P_PR20 ga je naar config en dan op FastEthernet0 en dan vul je IPv4 Address 172.16.20.20 in en bij subnetmask 255.255.255.0
+	9.	Op P_PR20 ga je naar settings en vul je in bij de gateway 172.16.30.1 en bij de DNS-server 11.11.11.14
+
+Vlan30 (Groep 6-8)
+	1.	Configureer P_PR30 aan P_SW3 met int f0/17
+	2.	Configureer P_A30 aan P_SW3 met int f0/18
+	3.	Ga op P_A30 op config mode en zet bij port 0 alles op ‘on’ en ‘auto’
+	4.	Bij port 1 in de config mode zet ‘SSID’  op Vlan30
+	5.	Bij 2.4 GHZ Channel vul gebruiken we in dit geval ‘3’.
+	6.	Bij authentication zet je het op ‘WPA2-PSK en vul je als password in P@ssw0rd30. 
+	7.	De encryption Type laat je op AES
+	8.	Op P_PR30 ga je naar config en ga je naar FastEthernet0 en zet je alles op ‘on’ en ‘auto’
+	9.	Bij IP4 Address vul je in: 172.16.30.30, bij het subnetmask 255.255.255.0.
+	10.	Dan moeten we nog de gateway invullen. Druk op settings en vul dan in: 172.16.30.1 en de DNS-server is 11.11.11.14
+
+Vlan40 (Docenten/Server)
+	1.	Configureer P_PC40 aan P_SW4 met f0/19
+
+Vlan50 (Gasten WIFI)
+	1.	Configureer P_A50 aan P_SW5 met g0/2
+	2.	Ga op P_A50 op config mode en zet bij port 0 alles op ‘on’ en ‘auto’
+	3.	Bij port 1 in de config mode zet ‘SSID’  op Vlan50
+	4.	Bij 2.4 GHZ Channel vul gebruiken we in dit geval ‘5’.
+	5.	Bij authentication zet je het op ‘WPA2-PSK en vul je als password in P@ssw0rd50. 
+	6.	De encryption Type laat je op AES
+	7.	Ga op PL_50 en ga naar ‘Physical’ en zet het dan even uit en plaats de nieuwe netwerkkaart ‘WPC300N’ erin. Haal de kaart die er al inzit eerst uit. Niet vergeten op de laptop dan weer aan te zetten.
+	8.	Klik in PL_50 dan op ‘Desktop’ en dan op ‘PC Wireless’ en druk dan op CONNECT. Dan selecteer je vlan50 en vul je de password P@ssw0rd50 in en druk je weer op CONNECT.
+
+Stap 5: 
+DHCP configureren:
+
+Op router P_Edge gaan we nu int g0/0/1 configureren
+Ga naar de router P_Edge en open de CLI.
+Typ dit in en druk elke keer op enter.
+Enable
+Configure terminal
+Int g0/0/1
+Description DHCP Client
+Ip address dhcp
+exit
+
+Nu gaan we interface g0/0/0 configureren
+
+int g0/0/0
+no shutdown
+ip add 10.1.1.1 255.255.255.252
+
+Nu gaan we op P_MLS interface Gig1/0/24 configureren
+
+en
+configure terminal
+int g1/0/24
+no switchport
+ip add 10.1.1.2 255.255.255.252
+no shutdown
+
+Stap 5: 
+DHCP op de MLS
+
+TIP: We gebruiken geen port interfaces meer, want dat hebben wij al bij de vlans gedaan.
+
+en
+conf t
+interface vlan10
+ip add 172.16.10.1 255.255.255.0 
+ip helper-address 11.11.11.14
+exit
+
+int vlan20
+ip add 172.16.20.1 255.255.255.0
+ip helper-address 11.11.11.14 (omdat de DNS in de netwerk zit waarbij je de ip adres gebruikt.
+exit
+
+Int vlan 30
+Ip add 172.16.30.1 255.255.255.0
+Ip helper-address 11.11.11.14
+Exit
+
+Interface vlan40
+Ip add 172.16.40.1 255.255.255.0
+Ip helper-address 11.11.11.14
+Exit
+
+Interface vlan50
+Ip add 172.16.50.1 255.255.255.0
+Ip helper-address 11.11.11.14
+Exit
+
+Interface vlan99
+Ip add 172.16.99.1 255.255.255.0
+Ip helper-address 11.11.11.14
+exit
+ 
+Nu gaan we een dhcp server instellen.
+ip dhcp excluded-address (dit doe je omdat je bepaalde ip addressen niet mag weggeven.)  172.16.10.0  172.16.10.49 Vanaf 50 geeft hij dan ip addressen.
+
+en
+conf t
+Ip dhcp excluded-address 172.16.20.0  172.16.20.49
+Ip dhcp excluded-address 172.16.30.0  172.16.30.49
+Ip dhcp excluded-address 172.16.40.0 172.16.40.49
+Ip dhcp excluded-address 172.16.50.0 172.16.50.49
+Ip dhcp excluded-address 172.16.99.0 172.16.99.49
+
+dhcp pools aanmaken
+
+en
+conf t
+Ip dhcp pool vlan10 
+Default-router 172.16.10.1
+Dns-server  11.11.11.14
+Network 172.16.10.0 255.255.255.0
+
+Ip dhcp pool vlan20 
+Default-router 172.16.20.1
+Dns-server  11.11.11.14
+Network 172.16.20.0 255.255.255.0
+
+Ip dhcp pool vlan30 
+Default-router 172.16.30.1
+Dns-server  11.11.11.14
+Network 172.16.30.0 255.255.255.0
+
+Ip dhcp pool vlan40 
+Default-router 172.16.40.1
+Dns-server  11.11.11.14
+Network 172.16.40.0 255.255.255.0
+
+
+Als je do sh run doet zie je dat je een naam hebt gegeven namelijk vlan10 en het netwerk is geconfigureerd en dat doe je ook bij de andere vlan’s.
+
+Nu kijk je of de pc’s (P_L10) ip adres krijgen met dhcp. En je kijkt ook naar de andere pc’s.
+ En je probeert te pingen met elkaar.
+
+Stap 6:
+Bekabeling moet goed staan, IP adressen, Routing.
+Glasvezel verbinding van webserver naar router. Router ISP lukt niet om te verbinden met glasvezel. 
+Andere router nodig, ISR 4331. Als je routers gaat verwisselen moet je een back up router gebruiken.
+
+Commands:
+
+ISP:
+
+EN
+Show running-config
+* Je kopieërt de hostname, ip dhcp excluded address, ip dhpc pool, network, default-router, dns-serve.
+
+ISR4331:
+
+En
+Conf t
+Plak het gekopieërde stuk 
+end
+Copy run start
+Show run ( gegevens staat er nu bij)
+Voordat je alles doet, doe je alle apparaten uit die je gaat bekabelen etc. Nu haal je de kabels uit de vorige router en die verwijder je dan en dan plaats je de kabels erin. Maar als eerste moet er een glasvezel module bij de nieuwe router komen dat is de 100FX module in. Na het erinzetten van de glasvezel ga je aan de gang met de server. De instellingen van de webserver ga je dusdanig ook veranderen. Je haalt bij de webserver de module eruit en dan zit je de FFE module erin. Daarna ga je de kabels trekken. Glasvezel kabel = fiber, die oranje. Dan zet je hem in Gig0/0/2 ( dit is van webserver naardie router). Daarna zet je copper-cross van gig0/0/0 naar gig0/0/1  van router naar P_Edge.	
+Ctrl + shift + 6 als je fout maakt kom je uit een loop
+P_EDGE
+Interface gi0/0/0 
+No shut
+( het poortje stond dicht)
+Moet een IP krijgen van de internet service provider krijgen -> 
+Interface gi0/0/1
+No shut
+Description DHCP-client van ISP
+Ip address dhcp 
+
+
+Nieuwe Router ISR4331
+En
+Config t
+Show Ip interface brief ( allemaal unassigned IP address)
+Interface gig0/0/0
+Description verbinding met P_Edge en DHCP server
+Ip addresss 12.12.12.1 255.255.255.0
+No shut
+
+Interface gi0/0/2
+Description LAN Arnhem met WebserverPinkeltje
+Ip address 11.11.11.1 255.255.255.0
+
+De Server
+IPv4 = 11.11.11.14
+Subnet = 255.255.255.0
+Gateway = 11.11.11.1
+DNS = 11.11.11.14
+DNS
+Pinkeltje 11.11.11.14
+Daarna pingen om te kijken of je jezelf en de gateway kunt pingen.
+
+Gebruikt geen loopback op je examen.
+NAT = Netwerk Address Translation, krijg je NIET op het examen.
+
+
+P_EDGE router
+Op  de P_Edge router moet je nog ip adressen assignen voor ip routing.
+IP route 172.16.40.0 255.255.255.0 10.1.1.2 ( die 40 wordt 50 en dan 99)
+
+
+OSPF = een routing protocol.
+Router ospf 1 ( getal is aangegeven in het technisch ontwerp)
+Do show ip route c ( daarin staat de public address)
+Network 10.1.1.0 0.0.0.3 area 0 ( je doet 255.255.255.255 – 255.255.255.252 =  (inverse masker) 0.0.0.3)
+Network 12.12.12.0  0.0.0.255 area 0(je doet 255.255.255.255 – 255.255.255.0 = (inverse masker) 0.0.0.255
+Passive-interface gig0/0/0
+Default-information originate
+End
+
+De nieuwe router 4331
+Sh ip route C
+Conf t
+Ip rute 0.0.0.0 0.0.0.0 lo 1
+Router ospf 1
+Network 11.11.11.0 0.0.0.255 area 0
+Network 12.12.12.0 0.0.0.255 area 0
+Network 13.13.13.0 0.0.0.255 area 0 
+Geen passive interfaces ( alles is public)
+Default-Information originate ( zodat het naar het internet gaat)
+
+OSPF moet je goed onder de knie hebben!
+
+P_Edge router
+En 
+Config t
+Ip route 0.0.0.0 0.0.0.0 12.12.12.1
