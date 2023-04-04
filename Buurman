@@ -1,0 +1,16 @@
+ipconfig - gateway is edge router
+
+ssh -l [username] [ip router]
+Login
+
+sh ip int brief
+
+Conf t
+Lldp run
+Exit
+
+Sh lldp neighbors
+
+ip route
+
+Login to new device and start again
